@@ -71,10 +71,88 @@ Open CLI And Type
          ![login.jpg](https://github.com/cybshark/jenkins/blob/master/jenkins%20image/log%20in.JPG)
 
 
-[More Details](https://docs.docker.com/get-started/part2/)
+   Markup : [More Details](https://docs.docker.com/get-started/part2/)
+
+## Job1: Pull the Github repo automatically when some developers push the repo to Github.
+
+  Markup : ![github.jpg]()
+
+We use Poll SCM to trigger this job meaning every 1 min jenkins check update and  push to this repo, Job1 will clone the repo and copy the  Developer file into ``/webage/`` folder.
+
+![pollscm.jpg]()
+
+## Job2: By looking at the code or program file, Jenkins should automatically start the respective language interpreter install image container to deploy code. Here my code is of HTML, hence Jenkins should start the container that has HTML already installed.
+
+Job to is Downstream of job one Means when job 1 run Sucessfully job to start run Automatically.
+
+ ![pollscm.jpg]()
+
+We Create one **python** Code for the Run perticular server. for refrence ```https://www.w3schools.com/python/python_conditions.asp```
+
+ ![Script.jpg]()
+
+After Run python code its start perticular server.
+
+## Job3: Test your app if it is working or not.If the app is not working, then send an email to the developer with error messages.
+Here using curl command we check page working or not http_code show the status code, If status code =200 means ist working fine excute the job. But status code Not equal to 200 then its run the python file. for sedding the mail.
+
+![job4shell.jpg]()
+ 
+ ### How to send notification on mail ?
+ 
+  Markup : * Using Email noffication Pluging 
+           * Configure any programming languages and run
+           
+  In my case I Create pythone file to send the notification on mail.
+  ```# Python code to illustrate Sending mail from  
+# your Gmail account  
+import smtplib 
+  
+# creates SMTP session 
+s = smtplib.SMTP('smtp.gmail.com', 587) 
+  
+# start TLS for security 
+s.starttls() 
+  
+# Authentication 
+s.login("sender@gmail.com", "password") 
+  
+# message to be sent 
+message = "SERver Error log ,Check details http://192.168.159.129:8080/job/Job%204/1/console"
+  
+# sending the mail 
+s.sendmail("sender@gmail.com", "reciver@gmail.com", message) 
+  
+# terminating the session 
+s.quit()
+```
+  
+ Finally Mail is here, Inside mail given link, you can test serverlog.  
+  ![job4shell.jpg]()
+  
+  We used here Build Pipeline, its show graphically your job status. 
+ ![job4shell.jpg]()
+ 
+ ## Job5: Create One extra job not belonging to the pipeline to monitor: If the container where the app is running. fails due to any reason then this job should automatically start the container again.
+ 
+Some case server goes down we can not run manually here, we create one job for monitoring it, 
+if any case sever goes down its restart it.
+
+![job4shell.jpg]()
+
+## Scope this technology
+    1. Automation is need is important for any Orgnazation for reduces Human error as well as increase the production.
+       DevOps is one technology to fullfill this requirement. 
+       
+       
+       
+       
+       
 
 
 
+ 
+ 
 Feel free to share your thoughts about the article and in case you run into any problems you can reach me out in [Linkedin](https://www.linkedin.com/in/vishal-dalvi-490b07134/) or email me at v.dalvi404@gmail.com
 
 
