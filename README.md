@@ -1,12 +1,22 @@
-# Create Jenkins server Using  Docker Image 
+   # Automation : Send the server status on mail #
 
 ## Problem statement 
 1.	Create container image that’s has Jenkins installed  using dockerfile 
 
 2.	When we launch this image, it should automatically starts Jenkins service in the container.
 
-## Software 
-Read Hat 8, jenkins , openjdk 11.2 , htppd
+3.	Create a job chain of job1, job2, job3 and  job4 using build pipeline plugin in Jenkins 
+
+4.	 Job1 : Pull  the Github repo automatically when some developers push repo to Github.
+
+5.	 Job2 : By looking at the code or program file, Jenkins should automatically start the respective language interpreter install image container to deploy code ( eg. If code is of  PHP, then Jenkins should start the container that has PHP already installed ).
+
+6.	 Job3 : Test your app if it  is working or not.if app is not working , then send email to developer with error messages.
+
+7	Create One extra job job5 for monitor : If container where app is running. fails due to any reson then this job should automatically start the container again.
+
+## Technology Used 
+   Docker , Jenkins , Git , GitHub, Httpd, 
 
 ## 1.	Create container image that’s has Jenkins installed  using dockerfile 
 
@@ -44,18 +54,23 @@ Read Hat 8, jenkins , openjdk 11.2 , htppd
   Jekins work on 8080 port by default , SAve the Docker file.
 
 ### STEP 2.: When we launch this image, it should automatically starts Jenkins service in the container.
+
 After Editing script. process to create image. in docker *build* is command to create docker image.
 Open CLI And Type
+
    ~~~
              [root@localhost ~]# docker build -t jenkindoc:v1 /root/jenkins/
    ~~~
+   
    *jenkindoc* is docker image name And after : v1 is version of os you can give any nam */root/jenkins* is path of that floder tere is    Dockerfile are created. its take few minutes. 
    ![buildimage.jpg](https://github.com/cybshark/jekinsdockerimage/blob/master/jenkins%20image/installation%20process.JPG)
    
    After SUCESSFULLY installation done we launch the Docker image using *run* command
+   
    ~~~
                         [root@localhost ~]# docker run  -i -t --name jenkin jenkindoc:v1 
    ~~~
+   
    You can give any name after --name and Enter.
    
    ![runimage.jpg](https://github.com/cybshark/jenkins/blob/master/jenkins%20image/launching%20new%20os.JPG)
@@ -68,42 +83,43 @@ Open CLI And Type
 
 
    HERE YOUR **JENKINS LOG IN PAGE**
+   
          ![login.jpg](https://github.com/cybshark/jenkins/blob/master/jenkins%20image/log%20in.JPG)
 
 
    Markup : [More Details](https://docs.docker.com/get-started/part2/)
 
-## Job1: Pull the Github repo automatically when some developers push the repo to Github.
+### Job1: Pull the Github repo automatically when some developers push the repo to Github.
 
-  Markup : ![github.jpg]()
+  Markup : ![github.jpg](https://github.com/cybshark/jenkins/blob/master/jenkins%20image/job%202%20git%20hub.JPG)
 
 We use Poll SCM to trigger this job meaning every 1 min jenkins check update and  push to this repo, Job1 will clone the repo and copy the  Developer file into ``/webage/`` folder.
 
-![pollscm.jpg]()
+![pollscm.jpg](https://github.com/cybshark/jenkins/blob/master/jenkins%20image/job%202%20jenkins%20shell.JPG)
 
-## Job2: By looking at the code or program file, Jenkins should automatically start the respective language interpreter install image container to deploy code. Here my code is of HTML, hence Jenkins should start the container that has HTML already installed.
+### Job2: By looking at the code or program file, Jenkins should automatically start the respective language interpreter install image container to deploy code. Here my code is of HTML, hence Jenkins should start the container that has HTML already installed.
 
-Job to is Downstream of job one Means when job 1 run Sucessfully job to start run Automatically.
+Job to is Downstream of job one Means when job 1 run Sucessfully after job 2 to start run Automatically.
 
- ![pollscm.jpg]()
+ ![pollscm.jpg](https://github.com/cybshark/jenkins/blob/master/jenkins%20image/job%202%20uspstream.JPG)
 
-We Create one **python** Code for the Run perticular server. for refrence ```https://www.w3schools.com/python/python_conditions.asp```
-
- ![Script.jpg]()
+We Create one **python** Code for the Run perticular server. for refrence [python](https://www.w3schools.com/python/python_conditions.asp)
+ 
+ ![Script.jpg](https://github.com/cybshark/jenkins/blob/master/jenkins%20image/job%202%20python%20script.JPG)
 
 After Run python code its start perticular server.
 
-## Job3: Test your app if it is working or not.If the app is not working, then send an email to the developer with error messages.
+### Job3: Test your app if it is working or not.If the app is not working, then send an email to the developer with error messages.
 Here using curl command we check page working or not http_code show the status code, If status code =200 means ist working fine excute the job. But status code Not equal to 200 then its run the python file. for sedding the mail.
 
-![job4shell.jpg]()
+![job4shell.jpg](https://github.com/cybshark/jenkins/blob/master/jenkins%20image/job%203.shell%20script.JPG)
  
  ### How to send notification on mail ?
  
-  Markup : * Using Email noffication Pluging 
-           * Configure any programming languages and run
+   **1. Using Email noffication Pluging 
+     2.Configure any programming languages and run**
            
-  In my case I Create pythone file to send the notification on mail.
+  In my case I Create pythone file to send the notification on [mail](https://stackabuse.com/how-to-send-emails-with-gmail-using-python/)
   ```# Python code to illustrate Sending mail from  
 # your Gmail account  
 import smtplib 
@@ -128,21 +144,20 @@ s.quit()
 ```
   
  Finally Mail is here, Inside mail given link, you can test serverlog.  
-  ![job4shell.jpg]()
+  ![mail.jpg](https://github.com/cybshark/jenkins/blob/master/jenkins%20image/mssg.jpg)
   
   We used here Build Pipeline, its show graphically your job status. 
  ![job4shell.jpg]()
  
- ## Job5: Create One extra job not belonging to the pipeline to monitor: If the container where the app is running. fails due to any reason then this job should automatically start the container again.
+ ### Job5: Create One extra job not belonging to the pipeline to monitor: If the container where the app is running. fails due to any reason then this job should automatically start the container again.
  
 Some case server goes down we can not run manually here, we create one job for monitoring it, 
 if any case sever goes down its restart it.
 
-![job4shell.jpg]()
+![job4shell.jpg](https://github.com/cybshark/jenkins/blob/master/jenkins%20image/monitoring.JPG)
 
 ## Scope this technology
-    1. Automation is need is important for any Orgnazation for reduces Human error as well as increase the production.
-       DevOps is one technology to fullfill this requirement. 
+  Automation is need is important for any Orgnazation for reduces Human error as well as increase the production, DevOps is one technology to fullfill this requirement. 
        
        
        
